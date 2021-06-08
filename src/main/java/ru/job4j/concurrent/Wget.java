@@ -10,7 +10,9 @@ public class Wget {
             }
         } catch (InterruptedException ie) {
             Thread.currentThread().interrupt();
-        }});
+            }
+        }
+        );
         thread.start();
     }
 }

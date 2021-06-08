@@ -27,6 +27,11 @@ public class ConsoleProgress implements Runnable {
                         i = 0;
                         break;
                     }
+                    default -> {
+                        System.out.print("\rОй");
+                        i = 0;
+                        break;
+                    }
                 }
                 Thread.sleep(500);
             }
