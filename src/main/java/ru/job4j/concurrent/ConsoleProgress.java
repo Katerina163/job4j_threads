@@ -4,34 +4,12 @@ public class ConsoleProgress implements Runnable {
     @Override
     public void run() {
         try {
+            char[] array = {'|', '/', '-', '\\'};
             int i = 0;
             while (!Thread.currentThread().isInterrupted()) {
-                switch (i) {
-                    case 0 -> {
-                        System.out.print("\rLoading ... |");
-                        i++;
-                        break;
-                    }
-                    case 1 -> {
-                        System.out.print("\rLoading ... /");
-                        i++;
-                        break;
-                    }
-                    case 2 -> {
-                        System.out.print("\rLoading ... -");
-                        i++;
-                        break;
-                    }
-                    case 3 -> {
-                        System.out.print("\rLoading ... \\");
-                        i = 0;
-                        break;
-                    }
-                    default -> {
-                        System.out.print("\rОй");
-                        i = 0;
-                        break;
-                    }
+                System.out.print("\rLoading ... " + array[i++]);
+                if (i == 4) {
+                    i = 0;
                 }
                 Thread.sleep(500);
             }
