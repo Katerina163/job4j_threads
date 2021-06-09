@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.URL;
 
 public class FileDownload implements Runnable {
+    private static volatile int i = 0;
     private final String url;
     private final int speed;
 
@@ -17,12 +18,17 @@ public class FileDownload implements Runnable {
     @Override
     public void run() {
         try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
-             FileOutputStream fileOutputStream = new FileOutputStream("new_file.xml")) {
+             FileOutputStream fileOutputStream = new FileOutputStream("new_file" + i + ".xml")) {
+            i++;
             byte[] dataBuffer = new byte[1024];
             int bytesRead;
+            Long start = System.nanoTime();
             while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
-                Thread.sleep(1024 / speed);
+            }
+            Long end = System.nanoTime();
+            if (1024 / (end - start) < speed) {
+                Thread.sleep(end - start);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -32,6 +38,9 @@ public class FileDownload implements Runnable {
     }
 
     public static void main(String[] args) throws InterruptedException {
+        if (args.length != 2) {
+            throw new IllegalArgumentException();
+        }
         String url = args[0];
         int speed = Integer.parseInt(args[1]);
         Thread wget = new Thread(new FileDownload(url, speed));
