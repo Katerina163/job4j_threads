@@ -14,15 +14,23 @@ import static org.junit.Assert.*;
 public class SimpleBlockingQueueTest {
     @Test
     public void test() throws InterruptedException {
-        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>();
+        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(3);
         Integer[] i = new Integer[2];
         Thread first = new Thread(() -> {
-            i[0] = queue.poll();
-            i[1] = queue.poll();
+            try {
+                i[0] = queue.poll();
+                i[1] = queue.poll();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
         });
         Thread second = new Thread(() -> {
-            queue.offer(1);
-            queue.offer(2);
+            try {
+                queue.offer(1);
+                queue.offer(2);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
         });
         first.start();
         second.start();
@@ -35,14 +43,26 @@ public class SimpleBlockingQueueTest {
     @Test
     public void whenFetchAllThenGetIt() throws InterruptedException {
         final CopyOnWriteArrayList<Integer> buffer = new CopyOnWriteArrayList<>();
-        final SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>();
+        final SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(3);
         Thread producer = new Thread(
-                () -> IntStream.range(0, 5).forEach(queue::offer));
+                () -> {
+                    try {
+                        for (int i = 0; i < 5; i++) {
+                            queue.offer(i);
+                        }
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                });
         producer.start();
         Thread consumer = new Thread(
                 () -> {
-                    while (!queue.isEmpty() || !Thread.currentThread().isInterrupted()) {
-                        buffer.add(queue.poll());
+                    try {
+                        while (!queue.isEmpty() || !Thread.currentThread().isInterrupted()) {
+                            buffer.add(queue.poll());
+                        }
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
                     }
                 }
         );
@@ -56,16 +76,24 @@ public class SimpleBlockingQueueTest {
     @Test
     public void testTwo() throws InterruptedException {
         final Queue<String> buffer = new LinkedList<>();
-        final SimpleBlockingQueue<String> queue = new SimpleBlockingQueue<>();
+        final SimpleBlockingQueue<String> queue = new SimpleBlockingQueue<>(2);
         Thread producer = new Thread(() -> {
-            queue.offer("0");
-            queue.offer("1");
-            queue.offer("2");
+            try {
+                queue.offer("0");
+                queue.offer("1");
+                queue.offer("2");
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
         });
         producer.start();
         Thread consumer = new Thread(() -> {
-            while (!queue.isEmpty() || !Thread.currentThread().isInterrupted()) {
-                buffer.add(queue.poll());
+            try {
+                while (!queue.isEmpty() || !Thread.currentThread().isInterrupted()) {
+                    buffer.add(queue.poll());
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
             }
         });
         consumer.start();
