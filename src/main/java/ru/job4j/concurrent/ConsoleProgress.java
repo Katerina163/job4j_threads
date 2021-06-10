@@ -8,7 +8,7 @@ public class ConsoleProgress implements Runnable {
             int i = 0;
             while (!Thread.currentThread().isInterrupted()) {
                 System.out.print("\rLoading ... " + array[i++]);
-                if (i == 4) {
+                if (i == array.length) {
                     i = 0;
                 }
                 Thread.sleep(500);
