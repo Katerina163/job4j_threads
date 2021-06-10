@@ -15,7 +15,7 @@ public class UserStorage {
         if (storage.containsKey(user.getId())) {
             return false;
         }
-        storage.put(user.getId(), user);
+        storage.putIfAbsent(user.getId(), user);
         return storage.containsValue(user);
     }
 
@@ -27,8 +27,7 @@ public class UserStorage {
         if (!storage.containsKey(user.getId())) {
             return false;
         }
-        User u = storage.get(user.getId());
-        u.setAmount(user.getAmount());
+        storage.replace(user.getId(), user);
         return storage.containsValue(user);
     }
 
@@ -39,7 +38,7 @@ public class UserStorage {
     public synchronized boolean transfer(int fromId, int toId, int amount) {
         User from = storage.get(fromId);
         User to = storage.get(toId);
-        if (from.getAmount() < amount) {
+        if (from == null || to == null || from.getAmount() < amount) {
             return false;
         } else {
             from.setAmount(from.getAmount() - amount);
