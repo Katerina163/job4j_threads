@@ -1,5 +1,6 @@
 package ru.job4j.concurrent;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.is;
@@ -61,7 +62,7 @@ public class UserStorageTest {
         assertFalse(rsl);
     }
 
-    @Test
+    @Test @Ignore
     public void updateNoId() {
         UserStorage us = new UserStorage();
         User u = new User(1, 1);
