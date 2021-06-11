@@ -12,6 +12,10 @@ public class SimpleBlockingQueue<T> {
     private final Queue<T> queue = new LinkedList<>();
     private final int size;
 
+    public SimpleBlockingQueue() {
+        size = 10;
+    }
+
     public SimpleBlockingQueue(int size) {
         this.size = size;
     }
