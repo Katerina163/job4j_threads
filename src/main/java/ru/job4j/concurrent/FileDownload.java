@@ -27,6 +27,7 @@ public class FileDownload implements Runnable {
                 if (bytesRead / (end - start) < speed) {
                     Thread.sleep(end - start);
                 }
+                start = System.nanoTime();
             }
         } catch (IOException e) {
             e.printStackTrace();
