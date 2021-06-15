@@ -62,7 +62,7 @@ public class UserStorageTest {
         assertFalse(rsl);
     }
 
-    @Test @Ignore
+    @Test
     public void updateNoId() {
         UserStorage us = new UserStorage();
         User u = new User(1, 1);
