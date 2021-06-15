@@ -12,7 +12,7 @@ public class UserStorage {
     private final Map<Integer, User> storage = new HashMap<>();
 
     public synchronized boolean add(User user) {
-        return !storage.containsValue(storage.putIfAbsent(user.getId(), user));
+        return storage.putIfAbsent(user.getId(), user) == null;
     }
 
     public synchronized User getFromId(int id) {
@@ -20,7 +20,7 @@ public class UserStorage {
     }
 
     public synchronized boolean update(User user) {
-        return !storage.containsValue(storage.replace(user.getId(), user));
+        return storage.replace(user.getId(), user) != null;
     }
 
     public synchronized boolean delete(User user) {
