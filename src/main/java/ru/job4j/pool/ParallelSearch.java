@@ -32,19 +32,11 @@ public class ParallelSearch extends RecursiveTask<Integer> {
         pright.fork();
         int left = pleft.join();
         int right = pright.join();
-        if (left == -1) {
-            return right;
-        }
-        return left;
+        return Math.max(right, left);
     }
 
     public static int search(int[] array, int number) {
         ForkJoinPool fJP = new ForkJoinPool();
         return fJP.invoke(new ParallelSearch(array, 0, array.length - 1, number));
-    }
-
-    public static void main(String[] args) {
-        int[] array = {1, 24, 2, 16, 3, 48, 9, 7, 8, 45, 18};
-        System.out.println(ParallelSearch.search(array, 18));
     }
 }
