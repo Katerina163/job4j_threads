@@ -28,7 +28,7 @@ public class RolColSum {
     private static int rowSum(int[][] matrix, int i) {
         int result = 0;
         for (int index = 0; index < matrix[i].length; index++) {
-            result += matrix[i][index];
+            result += matrix[index][i];
         }
         return result;
     }
@@ -36,7 +36,7 @@ public class RolColSum {
     private static int colSum(int[][] matrix, int i) {
         int result = 0;
         for (int index = 0; index < matrix.length; index++) {
-           result += matrix[index][i];
+           result += matrix[i][index];
         }
         return result;
     }
@@ -46,6 +46,7 @@ public class RolColSum {
         for (int index = 0; index < matrix.length; index++) {
             Sums sum = new Sums();
             sum.setColSum(colSum(matrix, index));
+
             sum.setRowSum(rowSum(matrix, index));
             result[index] = sum;
         }
