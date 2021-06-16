@@ -4,12 +4,12 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 
 public class ParallelSearch extends RecursiveTask<Integer> {
-    private final int[] array;
-    private final int first;
-    private final int last;
-    private final int number;
+    private final Integer[] array;
+    private final Integer first;
+    private final Integer last;
+    private final Integer number;
 
-    private ParallelSearch(int[] array, int first, int last, int number) {
+    private ParallelSearch(Integer[] array, Integer first, Integer last, Integer number) {
         this.array = array;
         this.first = first;
         this.last = last;
@@ -20,7 +20,7 @@ public class ParallelSearch extends RecursiveTask<Integer> {
     protected Integer compute() {
         if (last - first < 10) {
             for (int i = 0; i < array.length; i++) {
-                if (array[i] == number) {
+                if (array[i].equals(number)) {
                     return i;
                 }
             }
@@ -35,7 +35,7 @@ public class ParallelSearch extends RecursiveTask<Integer> {
         return Math.max(right, left);
     }
 
-    public static int search(int[] array, int number) {
+    public static int search(Integer[] array, Integer number) {
         ForkJoinPool fJP = new ForkJoinPool();
         return fJP.invoke(new ParallelSearch(array, 0, array.length - 1, number));
     }
