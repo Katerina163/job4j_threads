@@ -13,7 +13,7 @@ public class SimpleBlockingQueue<T> {
     private final int size;
 
     public SimpleBlockingQueue() {
-        size = 10;
+        size = 9;
     }
 
     public SimpleBlockingQueue(int size) {
